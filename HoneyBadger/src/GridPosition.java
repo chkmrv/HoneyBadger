@@ -1,18 +1,20 @@
 public class GridPosition {
+    private final int SIZE = 32;
     private int x;
     private int y;
     private static int count = 0;
 
     public GridPosition(int x, int y) {
         if (x >= 0) {
-            this.x = x - x % 32;
+            this.x = x - x % SIZE;
         } else {
-            this.x = (int) ((Math.floor(x / -32) + 1) * -32);
+            this.x = (int) ((Math.floor(x / -SIZE) + 1) * -SIZE);
         }
         if (y >= 0) {
-            this.y = y - y % 32;
+
+            this.y = y - y % SIZE;
         } else {
-            this.y = (int) ((Math.floor(y / -32) + 1) * -32);
+            this.y = (int) ((Math.floor(y / -SIZE) + 1) * -SIZE);
         }
 
         count = getCount() + 1;

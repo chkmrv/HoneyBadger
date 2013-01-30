@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="HoneyBadger:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/HoneyBadger_jar</output-path>
+    <root id="archive" name="HoneyBadger.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/HoneyBadger/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="HoneyBadger" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../libs/lwjgl-2.8.5/jar/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../libs/lwjgl-2.8.5/jar/lwjgl_util.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../libs/lwjgl-2.8.5/jar/jinput.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../libs/slick.jar" path-in-jar="/" />
+      <element id="library" level="project" name="windows" />
+      <element id="directory" name="res">
+        <element id="dir-copy" path="$PROJECT_DIR$/res" />
+      </element>
+    </root>
+  </artifact>
+</component>
