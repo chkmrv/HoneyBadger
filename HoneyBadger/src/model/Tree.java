@@ -1,3 +1,5 @@
+package model;
+
 public abstract class Tree extends Unit {
 
     private boolean cutDown;

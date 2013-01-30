@@ -1,3 +1,5 @@
+package common;
+
 public class GridPosition {
     private final int SIZE = 32;
     private int x;
@@ -18,7 +20,7 @@ public class GridPosition {
         }
 
         count = getCount() + 1;
-        System.out.println("GridPosition count: " + count);
+        System.out.println("common.GridPosition count: " + count);
     }
 
     public static int getCount() {

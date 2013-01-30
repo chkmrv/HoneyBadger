@@ -1,3 +1,5 @@
+package model;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -49,7 +51,7 @@ public class Player extends Unit implements Located, Moveable {
                 }
             }
         }  /*
-        for (Unit unit : units) {
+        for (model.Unit unit : units) {
 
         }  */
     }

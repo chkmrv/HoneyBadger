@@ -1,3 +1,5 @@
+package model;
+
 import static java.lang.StrictMath.hypot;
 
 public abstract class Unit implements MyDrawable, Located {

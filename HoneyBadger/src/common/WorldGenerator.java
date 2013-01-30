@@ -1,3 +1,8 @@
+package common;
+
+import model.*;
+import org.newdawn.slick.Game;
+
 import java.util.ArrayList;
 
 public class WorldGenerator {
@@ -24,7 +29,7 @@ public class WorldGenerator {
             /*
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
-                tiles.put(new GridPosition((x - 100) * 32 - 1, (y - 100) * 32 - 1), tileMap[x][y]);
+                tiles.put(new common.GridPosition((x - 100) * 32 - 1, (y - 100) * 32 - 1), tileMap[x][y]);
             }
         }      */
     }
@@ -122,17 +127,17 @@ public class WorldGenerator {
             }
         }
          /*
-        for (Map.Entry<GridPosition, Integer> entry : tiles.entrySet()) {
-            GridPosition gridPosition = entry.getKey();
+        for (Map.Entry<common.GridPosition, Integer> entry : tiles.entrySet()) {
+            common.GridPosition gridPosition = entry.getKey();
             Integer tile = entry.getValue();
-            if (MyTile.GRASS == tile) {
+            if (model.MyTile.GRASS == tile) {
                 generateUnitOnGrass(gridPosition, units);
                 generateMoveablesOnGrass(gridPosition, moveables);
             }
-            if (MyTile.STONE == tile) {
+            if (model.MyTile.STONE == tile) {
                 generateUnitOnStone(gridPosition, units);
             }
-            if (MyTile.FOREST_GRASS == tile) {
+            if (model.MyTile.FOREST_GRASS == tile) {
                 generateUnitOnForest(gridPosition, units);
                 generateMoveablesOnForest(gridPosition, moveables);
             }

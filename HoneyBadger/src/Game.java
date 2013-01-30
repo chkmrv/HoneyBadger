@@ -1,3 +1,6 @@
+import common.GridPosition;
+import common.WorldGenerator;
+import model.*;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.*;
 import org.newdawn.slick.imageout.ImageOut;
@@ -76,7 +79,7 @@ public class Game extends BasicGame {
         getViewPort().setX(getPlayer().getX() - getWidth() / 2);
         getViewPort().setY(getPlayer().getY() - getHeight() / 2);
         if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-         //   getTiles().put(new GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), MyTile.GRASS);
+         //   getTiles().put(new common.GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), model.MyTile.GRASS);
         }
         if (input.isMousePressed(Input.MOUSE_MIDDLE_BUTTON)) {
             int random = (int) (Math.random() * 10);
@@ -88,7 +91,7 @@ public class Game extends BasicGame {
             }
         }
         if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
-          //  getTiles().put(new GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), MyTile.STONE);
+          //  getTiles().put(new common.GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), model.MyTile.STONE);
 
         }
         if (input.isKeyPressed(Input.KEY_E)) {
@@ -110,12 +113,12 @@ public class Game extends BasicGame {
     public void render(GameContainer gameContainer, Graphics g) throws SlickException {
         g.translate(-getViewPort().getX(), -getViewPort().getY());
         /*
-        for (Map.Entry<GridPosition, Integer> entry : getTiles().entrySet()) {
-            GridPosition gridPosition = entry.getKey();
+        for (Map.Entry<common.GridPosition, Integer> entry : getTiles().entrySet()) {
+            common.GridPosition gridPosition = entry.getKey();
             Integer tile = entry.getValue();
 
             if (getPlayer().getDistanceTo(gridPosition.getX(), gridPosition.getY()) < getDistanceOfView()) {
-                MyTile.draw(tile, gridPosition.getX(), gridPosition.getY(), gameContainer);
+                model.MyTile.draw(tile, gridPosition.getX(), gridPosition.getY(), gameContainer);
             }
             // g.drawString(gridPosition.getX() + "", gridPosition.getX(), gridPosition.getY());
             // g.drawString(gridPosition.getY() + "", gridPosition.getX(), gridPosition.getY() + 16);

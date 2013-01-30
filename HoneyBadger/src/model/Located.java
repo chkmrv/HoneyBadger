@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Created with IntelliJ IDEA.
  * User: krld

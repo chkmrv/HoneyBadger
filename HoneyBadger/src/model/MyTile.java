@@ -1,3 +1,5 @@
+package model;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -33,7 +35,7 @@ public class MyTile {
     public MyTile(Image img) {
         //   this.img = img;
         count = getCount() + 1;
-        System.out.println("MyTile count: " + count);
+        System.out.println("model.MyTile count: " + count);
     }
 
     public static int getCount() {
