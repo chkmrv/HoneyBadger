@@ -23,7 +23,13 @@ public abstract class Unit implements MyDrawable, Located {
     public void setY(int y) {
         this.y = y;
     }
+
     public double getDistanceTo(double x, double y) {
         return hypot(x - this.x, y - this.y);
     }
+
+    public double getDistanceTo(Located unit) {
+        return getDistanceTo(unit.getX(), unit.getY());
+    }
+
 }

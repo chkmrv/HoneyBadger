@@ -6,19 +6,22 @@ public class MyTile {
     public static final int GRASS = 0;
     public static final int STONE = 1;
     public static final int DIRT = 2;
-    public static final int GRASS2 = 3;
+    public static final int FOREST_GRASS = 3;
+    public static final int WATER = 4;
     public static Image GRASS_IMG;
-    public static Image GRASS2_IMG;
+    public static Image FORES_GRASS_IMG;
     public static Image STONE_IMG;
     public static Image DIRT_IMG;
+    public static Image WATER_IMG;
     private static int count = 0;
 
     static {
         try {
             GRASS_IMG = new Image("res/grass.png");
-            GRASS2_IMG = new Image("res/grass2.png");
+            FORES_GRASS_IMG = new Image("res/grass2.png");
             STONE_IMG = new Image("res/stone.gif");
             DIRT_IMG = new Image("res/dirt.png");
+            WATER_IMG = new Image("res/water.png");
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -37,12 +40,14 @@ public class MyTile {
     public static void draw(int type, int x, int y) {
         if (type == MyTile.GRASS) {
             GRASS_IMG.draw(x, y);
-        } else if (type == MyTile.GRASS2) {
-            GRASS2_IMG.draw(x, y);
+        } else if (type == MyTile.FOREST_GRASS) {
+            FORES_GRASS_IMG.draw(x, y);
         }else if (type == MyTile.DIRT) {
             DIRT_IMG.draw(x, y);
         }else if (type == MyTile.STONE) {
             STONE_IMG.draw(x, y);
+        }else if (type == MyTile.WATER) {
+            WATER_IMG.draw(x, y);
         }
     }
 }
