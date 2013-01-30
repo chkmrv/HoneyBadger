@@ -1,6 +1,7 @@
 import static java.lang.StrictMath.hypot;
 
 public abstract class Unit implements MyDrawable, Located {
+    private int maxSpeed;
     private int x;
     private int y;
 
@@ -32,4 +33,11 @@ public abstract class Unit implements MyDrawable, Located {
         return getDistanceTo(unit.getX(), unit.getY());
     }
 
+    public int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(int maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
 }

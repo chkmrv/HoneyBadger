@@ -4,7 +4,6 @@ import org.newdawn.slick.imageout.ImageOut;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Game extends BasicGame {
     private static final int DELAY = 50;
@@ -15,11 +14,12 @@ public class Game extends BasicGame {
     private static int height;
     private int elapsedTime;
     private Rectangle viewPort;
-    private HashMap<GridPosition, Integer> tiles;
-    private ArrayList<Located> objects;
+    private static HashMap<GridPosition, Integer> tiles;
+    private static int[][] tileMap;
+    private static ArrayList<Located> objects;
+    private static ArrayList<Moveable> moveables;
     private int speed = 1;
     private int distanceOfView = 600;
-
 
     public static void main(String[] args) throws SlickException {
         AppGameContainer app = new AppGameContainer(new Game());
@@ -36,10 +36,12 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         objects = new ArrayList<Located>();
-        tiles = new HashMap<GridPosition, Integer>();
-        worldGenerator.generateTiles(tiles);
-        worldGenerator.generateUnits(objects, tiles);
-        player = new Player();
+
+        tileMap = tileMap = new int[200][200];
+        moveables = new ArrayList<Moveable>();
+        worldGenerator.generateTiles(tileMap);
+        worldGenerator.generateUnits(objects, tileMap, moveables);
+        player = new Player(2000, 2000);
         viewPort = new Rectangle(player.getX() - width / 2, player.getY() - height / 2, width, height);
     }
 
@@ -60,26 +62,25 @@ public class Game extends BasicGame {
             target.destroy();
         }
         if (input.isKeyDown(Input.KEY_W)) {
-            getPlayer().setY(getPlayer().getY() - getSpeed() * delta);
+            getPlayer().moveTo(getPlayer().getX(), getPlayer().getY() - getSpeed() * delta);
         }
         if (input.isKeyDown(Input.KEY_S)) {
-            getPlayer().setY(getPlayer().getY() + getSpeed() * delta);
+            getPlayer().moveTo(getPlayer().getX(), getPlayer().getY() + getSpeed() * delta);
         }
         if (input.isKeyDown(Input.KEY_A)) {
-            getPlayer().setX(getPlayer().getX() - getSpeed() * delta);
+            getPlayer().moveTo(getPlayer().getX() - getSpeed() * delta, getPlayer().getY());
         }
         if (input.isKeyDown(Input.KEY_D)) {
-            getPlayer().setX(getPlayer().getX() + getSpeed() * delta);
+            getPlayer().moveTo(getPlayer().getX() + getSpeed() * delta, getPlayer().getY());
         }
         getViewPort().setX(getPlayer().getX() - getWidth() / 2);
         getViewPort().setY(getPlayer().getY() - getHeight() / 2);
         if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-            getTiles().put(new GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), MyTile.GRASS);
-            System.out.println("tiles size: " + getTiles().size());
+         //   getTiles().put(new GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), MyTile.GRASS);
         }
         if (input.isMousePressed(Input.MOUSE_MIDDLE_BUTTON)) {
             int random = (int) (Math.random() * 10);
-            System.out.println("random " + random);
+
             if (random > 5) {
                 getObjects().add(new Brush(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()));
             } else {
@@ -87,8 +88,8 @@ public class Game extends BasicGame {
             }
         }
         if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
-            getTiles().put(new GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), MyTile.STONE);
-            System.out.println("tiles size: " + getTiles().size());
+          //  getTiles().put(new GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), MyTile.STONE);
+
         }
         if (input.isKeyPressed(Input.KEY_E)) {
             getPlayer().grabStuff(getObjects());
@@ -96,24 +97,46 @@ public class Game extends BasicGame {
         if (input.isKeyPressed(Input.KEY_R)) {
             getPlayer().dropStuff(getObjects());
         }
+        moveMoveables();
+    }
+
+    private void moveMoveables() {
+        for (Moveable moveable : moveables) {
+            moveable.move();
+        }
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics g) throws SlickException {
         g.translate(-getViewPort().getX(), -getViewPort().getY());
+        /*
         for (Map.Entry<GridPosition, Integer> entry : getTiles().entrySet()) {
             GridPosition gridPosition = entry.getKey();
             Integer tile = entry.getValue();
 
             if (getPlayer().getDistanceTo(gridPosition.getX(), gridPosition.getY()) < getDistanceOfView()) {
-                MyTile.draw(tile, gridPosition.getX(), gridPosition.getY());
+                MyTile.draw(tile, gridPosition.getX(), gridPosition.getY(), gameContainer);
             }
             // g.drawString(gridPosition.getX() + "", gridPosition.getX(), gridPosition.getY());
             // g.drawString(gridPosition.getY() + "", gridPosition.getX(), gridPosition.getY() + 16);
+        } */
+        for (int x = 0; x < tileMap.length; x++) {
+            for (int y = 0; y < tileMap.length; y++) {
+                int realX = x * 32 - 1;
+                int realY = y * 32 - 1;
+               // if (getPlayer().getDistanceTo(realX, realY) < getDistanceOfView()) {
+                    MyTile.draw(tileMap[x][y], realX, realY, gameContainer);
+                //}
+            }
         }
         for (Located unit : getObjects()) {
             if (getPlayer().getDistanceTo(unit) < getDistanceOfView()) {
                 unit.draw();
+            }
+        }
+        for (Moveable unit : moveables) {
+            if (getPlayer().getDistanceTo((Located) unit) < getDistanceOfView()) {
+                ((MyDrawable) unit).draw();
             }
         }
         //g.drawString("Hello World! x: y: " + viewPort.getX() + " " + viewPort.getY(), 100, 100);

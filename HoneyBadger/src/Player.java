@@ -4,14 +4,18 @@ import org.newdawn.slick.SlickException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Player extends Unit implements Located {
+public class Player extends Unit implements Located, Moveable {
     private Image img;
     private Inventory inventory;
 
     public Player() throws SlickException {
+        this(0, 0);
+    }
+
+    public Player(int x, int y) throws SlickException {
         setImg(new Image("res/ghost.png"));
-        setX(0);
-        setY(0);
+        setX(x);
+        setY(y);
         setInventory(new Inventory());
     }
 
@@ -60,5 +64,17 @@ public class Player extends Unit implements Located {
                 iter.remove();
             }
         }
+    }
+
+    @Override
+    public boolean moveTo(int x, int y) {
+        setX(x);
+        setY(y);
+        return true;
+    }
+
+    @Override
+    public boolean move() {
+        return false;
     }
 }

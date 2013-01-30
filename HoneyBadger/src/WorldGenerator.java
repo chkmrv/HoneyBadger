@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WorldGenerator {
     private final Game game;
@@ -9,9 +7,9 @@ public class WorldGenerator {
         this.game = game;
     }
 
-    public void generateTiles(HashMap<GridPosition, Integer> tiles) {
+    public void generateTiles(int[][] tileMap) {
         // 0 1
-        int[][] tileMap = new int[200][200];
+
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
                 tileMap[x][y] = (int) (Math.random() * 5);
@@ -23,12 +21,12 @@ public class WorldGenerator {
         reduceNoise(tileMap, 7, 5);
         reduceNoise(tileMap, 10, 6);
         reduceNoise(tileMap, 10, 6);
-
+            /*
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
                 tiles.put(new GridPosition((x - 100) * 32 - 1, (y - 100) * 32 - 1), tileMap[x][y]);
             }
-        }
+        }      */
     }
 
     private void reduceNoise(int[][] tileMap, int max, int min) {
@@ -105,26 +103,75 @@ public class WorldGenerator {
         }
     }
 
-    public void generateUnits(ArrayList<Located> units, HashMap<GridPosition, Integer> tiles) {
-
+    public void generateUnits(ArrayList<Located> units, int[][] tileMap, ArrayList<Moveable> moveables) {
+        for (int x = 0; x < tileMap.length; x++) {
+            for (int y = 0; y < tileMap.length; y++) {
+                int realX = x * 32 - 1;
+                int realY = y * 32 - 1;
+                if (MyTile.GRASS == tileMap[x][y]) {
+                    generateUnitOnGrass(realX, realY, units);
+                    generateMoveablesOnGrass(realX, realY, moveables);
+                }
+                if (MyTile.STONE == tileMap[x][y]) {
+                    generateUnitOnStone(realX, realY, units);
+                }
+                if (MyTile.FOREST_GRASS == tileMap[x][y]) {
+                    generateUnitOnForest(realX, realY, units);
+                    generateMoveablesOnForest(realX, realY, moveables);
+                }
+            }
+        }
+         /*
         for (Map.Entry<GridPosition, Integer> entry : tiles.entrySet()) {
             GridPosition gridPosition = entry.getKey();
             Integer tile = entry.getValue();
             if (MyTile.GRASS == tile) {
                 generateUnitOnGrass(gridPosition, units);
+                generateMoveablesOnGrass(gridPosition, moveables);
             }
             if (MyTile.STONE == tile) {
                 generateUnitOnStone(gridPosition, units);
             }
             if (MyTile.FOREST_GRASS == tile) {
                 generateUnitOnForest(gridPosition, units);
+                generateMoveablesOnForest(gridPosition, moveables);
             }
-            // g.drawString(gridPosition.getX() + "", gridPosition.getX(), gridPosition.getY());
-            // g.drawString(gridPosition.getY() + "", gridPosition.getX(), gridPosition.getY() + 16);
+            // g.drawString(x + "", x, y);
+            // g.drawString(y + "", x, y + 16);
+        }
+        */
+    }
+
+    private void generateMoveablesOnForest(int x, int y, ArrayList<Moveable> moveables) {
+        int randomValue = (int) (Math.random() * 200);
+        if (randomValue < 199) {
+            return;
+        }
+        int random = (int) (Math.random() * 10);
+        if (random > 4) {
+            moveables.add(new Boar((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
+        } else {
+            moveables.add(new Wolf((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
+            moveables.add(new Wolf((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
+            moveables.add(new Wolf((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
+            moveables.add(new Wolf((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         }
     }
 
-    private void generateUnitOnForest(GridPosition gridPosition, ArrayList<Located> units) {
+    private void generateMoveablesOnGrass(int x, int y, ArrayList<Moveable> moveables) {
+        int randomValue = (int) (Math.random() * 100);
+        if (randomValue < 99) {
+            return;
+        }
+        int random = (int) (Math.random() * 10);
+        if (random > 1) {
+            moveables.add(new Rabbit((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
+        } else {
+            moveables.add(new Boar((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
+        }
+    }
+
+    private void generateUnitOnForest(int x, int y, ArrayList<Located> units) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 55) {
             return;
@@ -132,13 +179,13 @@ public class WorldGenerator {
         int random = (int) (Math.random() * 10);
 
         if (random > 2) {
-            units.add(new Fir((int) (gridPosition.getX() + Math.random() * 32), (int) (gridPosition.getY() - Math.random() * 32)));
+            units.add(new Fir((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         } else {
-            units.add(new Brush((int) (gridPosition.getX() + Math.random() * 32), (int) (gridPosition.getY() - Math.random() * 32)));
+            units.add(new Brush((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         }
     }
 
-    private void generateUnitOnStone(GridPosition gridPosition, ArrayList<Located> units) {
+    private void generateUnitOnStone(int x, int y, ArrayList<Located> units) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 85) {
             return;
@@ -146,24 +193,23 @@ public class WorldGenerator {
         int random = (int) (Math.random() * 10);
 
         if (random > 3) {
-            units.add(new Rock((int) (gridPosition.getX() + Math.random() * 32), (int) (gridPosition.getY() - Math.random() * 32)));
+            units.add(new Rock((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         } else {
-            units.add(new Fir((int) (gridPosition.getX() + Math.random() * 32), (int) (gridPosition.getY() - Math.random() * 32)));
+            units.add(new Fir((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         }
     }
 
 
-
-    private void generateUnitOnGrass(GridPosition gridPosition, ArrayList<Located> units) {
+    private void generateUnitOnGrass(int x, int y, ArrayList<Located> units) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 95) {
             return;
         }
         int random = (int) (Math.random() * 10);
         if (random > 3) {
-            units.add(new Brush((int) (gridPosition.getX() + Math.random() * 32), (int) (gridPosition.getY() - Math.random() * 32)));
+            units.add(new Brush((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         } else {
-            units.add(new Fir((int) (gridPosition.getX() + Math.random() * 32), (int) (gridPosition.getY() - Math.random() * 32)));
+            units.add(new Fir((int) (x + Math.random() * 32), (int) (y - Math.random() * 32)));
         }
     }
 }
