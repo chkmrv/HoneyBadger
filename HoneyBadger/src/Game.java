@@ -1,4 +1,3 @@
-import common.GridPosition;
 import common.WorldGenerator;
 import model.*;
 import org.lwjgl.util.Rectangle;
@@ -6,7 +5,6 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.imageout.ImageOut;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Game extends BasicGame {
     private static final int DELAY = 50;
@@ -17,7 +15,6 @@ public class Game extends BasicGame {
     private static int height;
     private int elapsedTime;
     private Rectangle viewPort;
-    private static HashMap<GridPosition, Integer> tiles;
     private static int[][] tileMap;
     private static ArrayList<Located> objects;
     private static ArrayList<Moveable> moveables;
@@ -174,14 +171,6 @@ public class Game extends BasicGame {
 
     public void setViewPort(Rectangle viewPort) {
         this.viewPort = viewPort;
-    }
-
-    public HashMap<GridPosition, Integer> getTiles() {
-        return tiles;
-    }
-
-    public void setTiles(HashMap<GridPosition, Integer> tiles) {
-        this.tiles = tiles;
     }
 
     public ArrayList<Located> getObjects() {
