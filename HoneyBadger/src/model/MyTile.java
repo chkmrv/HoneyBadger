@@ -53,7 +53,7 @@ public class MyTile {
             STONE_IMG.draw(x, y);
         } else if (type == MyTile.WATER) {
 
-            if (gameContainer.getTime()%5000 > 2500) {
+            if (gameContainer.getTime()%1000 > 500) {
                 WATER_IMG.draw(x, y);
             } else {
                 WATER2_IMG.draw(x, y);

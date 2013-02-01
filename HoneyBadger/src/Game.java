@@ -18,7 +18,7 @@ public class Game extends BasicGame {
     private static int[][] tileMap;
     private static ArrayList<Located> objects;
     private static ArrayList<Moveable> moveables;
-    private int speed = 1;
+    private int speed = 20;
     private int distanceOfView = 600;
 
     public static void main(String[] args) throws SlickException {
@@ -76,7 +76,7 @@ public class Game extends BasicGame {
         getViewPort().setX(getPlayer().getX() - getWidth() / 2);
         getViewPort().setY(getPlayer().getY() - getHeight() / 2);
         if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-         //   getTiles().put(new common.GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), model.MyTile.GRASS);
+            //   getTiles().put(new common.GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), model.MyTile.GRASS);
         }
         if (input.isMousePressed(Input.MOUSE_MIDDLE_BUTTON)) {
             int random = (int) (Math.random() * 10);
@@ -88,7 +88,7 @@ public class Game extends BasicGame {
             }
         }
         if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
-          //  getTiles().put(new common.GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), model.MyTile.STONE);
+            //  getTiles().put(new common.GridPosition(input.getMouseX() + getViewPort().getX(), input.getMouseY() + getViewPort().getY()), model.MyTile.STONE);
 
         }
         if (input.isKeyPressed(Input.KEY_E)) {
@@ -120,23 +120,30 @@ public class Game extends BasicGame {
             // g.drawString(gridPosition.getX() + "", gridPosition.getX(), gridPosition.getY());
             // g.drawString(gridPosition.getY() + "", gridPosition.getX(), gridPosition.getY() + 16);
         } */
-        for (int x = 0; x < tileMap.length; x++) {
-            for (int y = 0; y < tileMap.length; y++) {
+        int playerX = getPlayer().getX();
+        int playerY = getPlayer().getY();
+        for (int x = playerX / 32 - 15; x < playerX / 32 + 15; x++) {
+            for (int y = playerY / 32 - 15; y < playerY / 32 + 15; y++) {
                 int realX = x * 32 - 1;
                 int realY = y * 32 - 1;
-               // if (getPlayer().getDistanceTo(realX, realY) < getDistanceOfView()) {
+                // if (getPlayer().getDistanceTo(realX, realY) < getDistanceOfView()) {
+                try {
                     MyTile.draw(tileMap[x][y], realX, realY, gameContainer);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                }
                 //}
             }
         }
         for (Located unit : getObjects()) {
-            if (getPlayer().getDistanceTo(unit) < getDistanceOfView()) {
+            if (playerX - 15 * 32 < unit.getX() && playerX + 15 * 32 > unit.getX() &&
+                    playerY - 15 * 32 < unit.getY() && playerY + 15 * 32 > unit.getY()) {
                 unit.draw();
             }
         }
         for (Moveable unit : moveables) {
-            if (getPlayer().getDistanceTo((Located) unit) < getDistanceOfView()) {
-                ((MyDrawable) unit).draw();
+            if (playerX - 15 * 32 < unit.getX() && playerX + 15 * 32 > unit.getX() &&
+                    playerY - 15 * 32 < unit.getY() && playerY + 15 * 32 > unit.getY()) {
+                unit.draw();
             }
         }
         //g.drawString("Hello World! x: y: " + viewPort.getX() + " " + viewPort.getY(), 100, 100);
