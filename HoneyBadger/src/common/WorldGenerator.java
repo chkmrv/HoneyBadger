@@ -1,18 +1,12 @@
 package common;
 
 import model.*;
-import org.newdawn.slick.Game;
 
 import java.util.ArrayList;
 
 public class WorldGenerator {
-    private final Game game;
 
-    public WorldGenerator(Game game) {
-        this.game = game;
-    }
-
-    public void generateTiles(int[][] tileMap) {
+    public static void generateTiles(int[][] tileMap) {
         // 0 1
 
         for (int x = 0; x < tileMap.length; x++) {
@@ -34,7 +28,7 @@ public class WorldGenerator {
         }      */
     }
 
-    private void reduceNoise(int[][] tileMap, int max, int min) {
+    private static void reduceNoise(int[][] tileMap, int max, int min) {
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
                 tileMap[x][y] = getTypeNeighbors(tileMap, x, y, max, min);
@@ -42,7 +36,7 @@ public class WorldGenerator {
         }
     }
 
-    private int getTypeNeighbors(int[][] tileMap, int x, int y, int max, int min) {
+    private static int getTypeNeighbors(int[][] tileMap, int x, int y, int max, int min) {
         int resultType = 4;
         int maxCount = 0;
         int grassCount = getCountNeighbors(tileMap, x, y, MyTile.GRASS);
@@ -81,7 +75,7 @@ public class WorldGenerator {
         //  return getCountNeighbors(tileMap, x, y, type);
     }
 
-    private int getCountNeighbors(int[][] tileMap, int x, int y, int type) {
+    private static int getCountNeighbors(int[][] tileMap, int x, int y, int type) {
         int result = 0;
 
         result = result + checkTileValue(tileMap, x + 1, y + 1, type);
@@ -96,7 +90,7 @@ public class WorldGenerator {
         return result;
     }
 
-    private int checkTileValue(int[][] tileMap, int x, int y, int type) {
+    private static int checkTileValue(int[][] tileMap, int x, int y, int type) {
         try {
             if (tileMap[x][y] == type) {
                 return 1;
@@ -108,7 +102,7 @@ public class WorldGenerator {
         }
     }
 
-    public void generateUnits(ArrayList<Located> units, int[][] tileMap, ArrayList<Moveable> moveables) {
+    public static void generateUnits(ArrayList<Located> units, int[][] tileMap, ArrayList<Moveable> moveables) {
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
                 int realX = x * 32 - 1;
@@ -147,7 +141,7 @@ public class WorldGenerator {
         */
     }
 
-    private void generateMoveablesOnForest(int x, int y, ArrayList<Moveable> moveables) {
+    private static void generateMoveablesOnForest(int x, int y, ArrayList<Moveable> moveables) {
         int randomValue = (int) (Math.random() * 200);
         if (randomValue < 199) {
             return;
@@ -163,7 +157,7 @@ public class WorldGenerator {
         }
     }
 
-    private void generateMoveablesOnGrass(int x, int y, ArrayList<Moveable> moveables) {
+    private static void generateMoveablesOnGrass(int x, int y, ArrayList<Moveable> moveables) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 99) {
             return;
@@ -176,7 +170,7 @@ public class WorldGenerator {
         }
     }
 
-    private void generateUnitOnForest(int x, int y, ArrayList<Located> units) {
+    private static void generateUnitOnForest(int x, int y, ArrayList<Located> units) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 55) {
             return;
@@ -190,7 +184,7 @@ public class WorldGenerator {
         }
     }
 
-    private void generateUnitOnStone(int x, int y, ArrayList<Located> units) {
+    private static void generateUnitOnStone(int x, int y, ArrayList<Located> units) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 85) {
             return;
@@ -205,7 +199,7 @@ public class WorldGenerator {
     }
 
 
-    private void generateUnitOnGrass(int x, int y, ArrayList<Located> units) {
+    private static void generateUnitOnGrass(int x, int y, ArrayList<Located> units) {
         int randomValue = (int) (Math.random() * 100);
         if (randomValue < 95) {
             return;

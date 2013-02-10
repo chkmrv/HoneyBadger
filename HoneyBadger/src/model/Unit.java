@@ -1,11 +1,14 @@
 package model;
 
+import java.io.Serializable;
+
 import static java.lang.StrictMath.hypot;
 
-public abstract class Unit implements MyDrawable, Located {
+public abstract class Unit implements MyDrawable, Located, Serializable {
     private int maxSpeed;
     private int x;
     private int y;
+    private int speed;
 
     public abstract void draw();
 
@@ -41,5 +44,13 @@ public abstract class Unit implements MyDrawable, Located {
 
     public void setMaxSpeed(int maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

@@ -4,20 +4,23 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 public class Player extends Unit implements Located, Moveable {
-    private Image img;
+    transient private Image img;
     private Inventory inventory;
+    private long id;
 
     public Player() throws SlickException {
         this(0, 0);
     }
 
-    public Player(int x, int y) throws SlickException {
-        setImg(new Image("res/ghost.png"));
+    public Player(int x, int y)  {
+        setId(Calendar.getInstance().getTimeInMillis());
         setX(x);
         setY(y);
+        setSpeed(20);
         setInventory(new Inventory());
     }
 
@@ -30,7 +33,15 @@ public class Player extends Unit implements Located, Moveable {
     }
 
     public void draw() {
+        if (img == null) {
+            try {
+                setImg(new Image("res/ghost.png"));
+            } catch (SlickException e) {
+                e.printStackTrace();
+            }
+        }
         getImg().draw(getX(), getY());
+
     }
 
     public Inventory getInventory() {
@@ -78,5 +89,30 @@ public class Player extends Unit implements Located, Moveable {
     @Override
     public boolean move() {
         return false;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        if (id != player.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    public long getId() {
+        return id;
     }
 }
