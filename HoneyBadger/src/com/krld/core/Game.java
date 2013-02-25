@@ -14,7 +14,7 @@ public class Game extends BasicGame {
     private int runningType;
     public static final int RUNNING_SERVER = 0;
     public static final int RUNNING_CLIENT = 1;
-    private static final int DELAY = 250;
+    private static final int DELAY = 200;
     private static long time = System.nanoTime();
 
     private static int width;
