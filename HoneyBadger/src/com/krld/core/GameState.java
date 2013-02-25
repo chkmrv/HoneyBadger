@@ -5,9 +5,10 @@ import com.krld.model.Moveable;
 import com.krld.model.Player;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 
-public class GameState implements Serializable {
+public class GameState implements Remote, Serializable {
     private  GameObjects gameObjects = new GameObjects();
     private int[][] tileMap;
     //     private Player player;

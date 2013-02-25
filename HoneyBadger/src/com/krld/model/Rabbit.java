@@ -54,7 +54,7 @@ public class Rabbit extends Unit implements Moveable, Living {
         if (random > 2) {
             return false;
         }
-        moveTo((int) (getX() + Math.random() * maxSpeed * 2 - maxSpeed), (int) (getY() + Math.random() * maxSpeed * 2 - maxSpeed));
+        moveTo(((getX() +  (Math.random() <= 0.5 ? 1 : -1))), (int) (getY() + (Math.random() <= 0.5 ? 1 : -1)));
         return true;
     }
 }

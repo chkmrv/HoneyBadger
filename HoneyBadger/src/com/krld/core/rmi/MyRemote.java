@@ -1,6 +1,8 @@
 package com.krld.core.rmi;
 
 import com.krld.core.GameState;
+import com.krld.core.MoveDirection;
+import com.krld.model.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -16,4 +18,8 @@ public interface MyRemote extends Remote {
     public String sayHello() throws RemoteException;
 
     GameState getGameState() throws RemoteException;
+
+    Player getNewPlayer() throws RemoteException;
+
+    void move(long id, MoveDirection moveDirection) throws RemoteException;
 }

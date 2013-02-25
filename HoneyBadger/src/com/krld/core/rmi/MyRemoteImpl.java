@@ -2,6 +2,8 @@ package com.krld.core.rmi;
 
 import com.krld.core.Game;
 import com.krld.core.GameState;
+import com.krld.core.MoveDirection;
+import com.krld.model.Player;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
@@ -10,7 +12,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class MyRemoteImpl extends UnicastRemoteObject implements MyRemote {
-    private int dogCount = 0;
     private static Game game;
 
     protected MyRemoteImpl() throws RemoteException {
@@ -24,6 +25,36 @@ public class MyRemoteImpl extends UnicastRemoteObject implements MyRemote {
     @Override
     public GameState getGameState() throws RemoteException {
         return game.getGameState();
+    }
+
+    @Override
+    public Player getNewPlayer() throws RemoteException {
+        Player player = new Player(2000, 2000);
+        game.getGameState().getPlayers().add(player);
+        return player;
+    }
+
+    @Override
+    public void move(long id, MoveDirection moveDirection) throws RemoteException {
+        for (Player player : game.getGameState().getPlayers()) {
+            if (player.getId() == id) {
+                switch (moveDirection) {
+                    case TOP:
+                        player.moveTo(player.getX(), player.getY() - player.getSpeed());
+                        break;
+                    case LEFT:
+                        player.moveTo(player.getX() - player.getSpeed(), player.getY());
+                        break;
+                    case RIGHT:
+                        player.moveTo(player.getX() + player.getSpeed(), player.getY());
+                        break;
+                    case BOT:
+                        player.moveTo(player.getX(), player.getY() + player.getSpeed());
+                        break;
+                }
+                break;
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -48,7 +79,5 @@ public class MyRemoteImpl extends UnicastRemoteObject implements MyRemote {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-
-
     }
 }

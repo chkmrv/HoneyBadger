@@ -1,10 +1,11 @@
 package com.krld.model;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 
 import static java.lang.StrictMath.hypot;
 
-public abstract class Unit implements MyDrawable, Located, Serializable {
+public abstract class Unit implements Remote, MyDrawable, Located, Serializable {
     private int maxSpeed;
     private int x;
     private int y;

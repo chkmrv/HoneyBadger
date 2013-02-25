@@ -14,7 +14,7 @@ public class Game extends BasicGame {
     private int runningType;
     public static final int RUNNING_SERVER = 0;
     public static final int RUNNING_CLIENT = 1;
-    private static final int DELAY = 200;
+    private static final int DELAY = 50;
     private static long time = System.nanoTime();
 
     private static int width;
@@ -68,8 +68,23 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         initGameState();
+      /*  FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream("temp.out");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this.gameState.getGameObjects().moveables);
+            oos.flush();
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }  */
         if (runningType == RUNNING_CLIENT) {
-            setPlayer(new Player(2000, 2000));
+            try {
+                this.gameState = service.getGameState();
+                setPlayer(service.getNewPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             viewPort = new Rectangle(getPlayer().getX() - width / 2, getPlayer().getY() - height / 2, width, height);
         } else {
 
@@ -95,21 +110,29 @@ public class Game extends BasicGame {
         if (getElapsedTime() <= getDelay()) {
             return;
         }
+        setElapsedTime(0);
         if (runningType == RUNNING_CLIENT) {
             try {
-                this.gameState = service.getGameState();
-            } catch (RemoteException e) {
+                gameState.setGameObjects(service.getGameState().getGameObjects());
+                for (Player pl : gameState.getPlayers()) {
+                    if (pl.getId() == getPlayer().getId()) {
+                        setPlayer(pl);
+                        break;
+                    }
+                }
+                handleInput(container);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            setElapsedTime(0);
-            handleInput(container);
+
         } else if (runningType == RUNNING_SERVER) {
+            Log.i("moveMoveables");
             moveMoveables();
             //            server.send();
         }
     }
 
-    private void handleInput(GameContainer container) throws SlickException {
+    private void handleInput(GameContainer container) throws SlickException, RemoteException {
         Input input = container.getInput();
         Graphics g = container.getGraphics();
         if (input.isKeyPressed(Input.KEY_P)) {
@@ -119,16 +142,20 @@ public class Game extends BasicGame {
             target.destroy();
         }
         if (input.isKeyDown(Input.KEY_W)) {
-            getPlayer().moveTo(getPlayer().getX(), getPlayer().getY() - getPlayer().getSpeed());
+            //getPlayer().moveTo(getPlayer().getX(), getPlayer().getY() - getPlayer().getSpeed());
+            service.move(getPlayer().getId(), MoveDirection.TOP );
         }
         if (input.isKeyDown(Input.KEY_S)) {
-            getPlayer().moveTo(getPlayer().getX(), getPlayer().getY() + getPlayer().getSpeed());
+            //getPlayer().moveTo(getPlayer().getX(), getPlayer().getY() + getPlayer().getSpeed());
+            service.move(getPlayer().getId(), MoveDirection.BOT);
         }
         if (input.isKeyDown(Input.KEY_A)) {
-            getPlayer().moveTo(getPlayer().getX() - getPlayer().getSpeed(), getPlayer().getY());
+           // getPlayer().moveTo(getPlayer().getX() - getPlayer().getSpeed(), getPlayer().getY());
+            service.move(getPlayer().getId(), MoveDirection.LEFT );
         }
         if (input.isKeyDown(Input.KEY_D)) {
-            getPlayer().moveTo(getPlayer().getX() + getPlayer().getSpeed(), getPlayer().getY());
+         //   getPlayer().moveTo(getPlayer().getX() + getPlayer().getSpeed(), getPlayer().getY());
+            service.move(getPlayer().getId(), MoveDirection.RIGHT);
         }
         getViewPort().setX(getPlayer().getX() - getWidth() / 2);
         getViewPort().setY(getPlayer().getY() - getHeight() / 2);
