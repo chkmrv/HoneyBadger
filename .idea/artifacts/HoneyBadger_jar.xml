@@ -12,7 +12,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../libs/slick.jar" path-in-jar="/" />
       <element id="library" level="project" name="windows" />
       <element id="directory" name="res">
-        <element id="dir-copy" path="$PROJECT_DIR$/res" />
+        <element id="dir-copy" path="$PROJECT_DIR$/HoneyBadger/res" />
       </element>
     </root>
   </artifact>
