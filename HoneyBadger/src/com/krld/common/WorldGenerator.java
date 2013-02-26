@@ -6,34 +6,37 @@ import java.util.ArrayList;
 
 public class WorldGenerator {
 
-    public static void generateTiles(int[][] tileMap) {
-        // 0 1
-
+    public static int[][] generateTiles() {
+        int[][] tileMap = new int[200][200];
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
                 tileMap[x][y] = (int) (Math.random() * 5);
             }
         }
-
-        reduceNoise(tileMap, 7, 3);
-        reduceNoise(tileMap, 7, 4);
-        reduceNoise(tileMap, 7, 5);
-        reduceNoise(tileMap, 10, 6);
-        reduceNoise(tileMap, 10, 6);
-            /*
-        for (int x = 0; x < tileMap.length; x++) {
-            for (int y = 0; y < tileMap.length; y++) {
-                tiles.put(new com.krld.common.GridPosition((x - 100) * 32 - 1, (y - 100) * 32 - 1), tileMap[x][y]);
-            }
-        }      */
+        for (int i = 1; i < 5; i++) {
+            tileMap = reduceNoise(tileMap, 6, 3);
+        }
+        for (int i = 1; i < 5; i++) {
+            tileMap = reduceNoise(tileMap, 10, 3);
+        }
+        return tileMap;
     }
 
-    private static void reduceNoise(int[][] tileMap, int max, int min) {
+    private static int[][] reduceNoise(int[][] tileMap, int max, int min) {
+        int[][] newTileMap = new int[200][200];
+        System.out.println();
+        System.out.println("=================");
+        System.out.println("=====++++========");
+        System.out.println("=================");
+        System.out.println();
         for (int x = 0; x < tileMap.length; x++) {
             for (int y = 0; y < tileMap.length; y++) {
-                tileMap[x][y] = getTypeNeighbors(tileMap, x, y, max, min);
+                System.out.print(tileMap[x][y] + " ");
+                newTileMap[x][y] = getTypeNeighbors(tileMap, x, y, max, min);
             }
+            System.out.println();
         }
+        return newTileMap;
     }
 
     private static int getTypeNeighbors(int[][] tileMap, int x, int y, int max, int min) {

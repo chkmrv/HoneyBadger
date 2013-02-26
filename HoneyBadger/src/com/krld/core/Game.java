@@ -97,8 +97,7 @@ public class Game extends BasicGame {
         getGameState().setMoveables(new ArrayList<Moveable>());
         getGameState().setPlayers(new ArrayList<Player>());
 
-        getGameState().setTileMap(new int[200][200]);
-        WorldGenerator.generateTiles(getGameState().getTileMap());
+        getGameState().setTileMap(WorldGenerator.generateTiles());
         WorldGenerator.generateUnits(getGameState().getObjects(), getGameState().getTileMap(), getGameState().getMoveables());
     }
 
@@ -126,7 +125,7 @@ public class Game extends BasicGame {
             }
 
         } else if (runningType == RUNNING_SERVER) {
-            Log.i("moveMoveables");
+         //   Log.i("moveMoveables");
             moveMoveables();
             //            server.send();
         }
