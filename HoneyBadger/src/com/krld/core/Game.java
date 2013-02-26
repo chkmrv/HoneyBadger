@@ -67,7 +67,7 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        initGameState();
+
       /*  FileOutputStream fos = null;
         try {
             fos = new FileOutputStream("temp.out");
@@ -80,6 +80,7 @@ public class Game extends BasicGame {
         }  */
         if (runningType == RUNNING_CLIENT) {
             try {
+                gameContainer.setAlwaysRender(true);
                 this.gameState = service.getGameState();
                 setPlayer(service.getNewPlayer());
             } catch (Exception e) {
@@ -87,7 +88,7 @@ public class Game extends BasicGame {
             }
             viewPort = new Rectangle(getPlayer().getX() - width / 2, getPlayer().getY() - height / 2, width, height);
         } else {
-
+            initGameState();
         }
     }
 
