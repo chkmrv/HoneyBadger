@@ -31,7 +31,7 @@ public class Game extends BasicGame {
     private MyRemote service;
 
     public Game(int mode) {
-        super("com.krld Server");
+        super("I SUPER BiG SEXY GIRL");
         runningType = mode;
     }
 
